@@ -2,13 +2,6 @@
 # Each user should have his own tasks in to do list. User should be able to add/ update/ delete tasks.
 # User information and task information should be kept in database
 # Database interactions should be handled by a separate object.
-import email
-
-from sqlalchemy import delete
-
-import db_crud
-from models import Users, Tasks
-from db import Session
 import helper
 import db_crud
 
