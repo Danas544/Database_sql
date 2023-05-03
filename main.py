@@ -9,10 +9,10 @@ from sqlalchemy.orm.decl_api import DeclarativeMeta
 
 
 class App:
-    def __init__(self, db_name: str, base: DeclarativeMeta):
-        self.DB = SqliteDatabase(db_name=db_name, base=base)
-        self.DB.create_detabase()
-    def start_app(self):
+    def __init__(self, DB):
+        self.DB = DB
+
+    def run(self):
         while True:
             choice = helper.choose_login_registration()
             if choice == 1:
@@ -81,6 +81,11 @@ class App:
             elif choice == 3:
                 exit()
 
+DB = SqliteDatabase(db_name='todolist.db', base=Base)
+DB.create_detabase()
+start = App(DB)
 
-start = App(db_name='todolist.db', base=Base)
-start.start_app()
+
+if __name__ == '__main__':
+    start.run()
+
