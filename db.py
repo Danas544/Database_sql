@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm.decl_api import DeclarativeMeta, declarative_base
 from sqlalchemy.orm import sessionmaker
 from models import Users, Tasks
-from typing import Optional
+from typing import Optional , Union
 class SqliteDatabase:
     def __init__(self, db_name:str, base: DeclarativeMeta):
         self.db_name = db_name
@@ -23,7 +23,7 @@ class SqliteDatabase:
         except:
             return False
 
-    def select_user_by_password_email(self, email: str, password: str) -> Optional['user']:
+    def select_user_by_password_email(self, email: str, password: str) -> Union[Users,bool]:
         user = self.session.query(Users).filter(Users.email == email, Users.password == password).first()
         if user is None:
             return False
@@ -40,13 +40,17 @@ class SqliteDatabase:
 
     def user_tasks(self, user):
         task = self.session.query(Tasks).filter(Tasks.user_id == user.id)
+        if task.count() == 0:
+            return False
         return task
 
-    def get_user_task_byid(self, task_id):
-        task = self.session.query(Tasks).get(task_id)
+    def get_user_task_byid(self, task_id, user):
+        task = self.session.query(Tasks).filter(Tasks.id == task_id, Tasks.user_id == user.id).first()
         return task
 
     def update_task(self, task, name=None, status=None) -> bool:
+        if task is None:
+            return False
         if name is not None:
             task.description = name
             try:
@@ -62,6 +66,8 @@ class SqliteDatabase:
             return False
 
     def delete_task(self, task) -> bool:
+        if task is None:
+            return False
         self.session.delete(task)
         try:
             self.session.commit()

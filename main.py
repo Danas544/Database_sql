@@ -30,42 +30,60 @@ class App:
                         task = input('Description: ')
                         status = self.DB.add_task(task=task, user=user)
                         if status is False:
-                            print(status)
+                            print('Error')
                             continue
                         print("Successfully save task")
                     elif choice == 2:
                         tasks = self.DB.user_tasks(user=user)
+                        print('________________________________________________________________')
+                        if tasks is False:
+                            print('Not found tasks')
+                            print('________________________________________________________________')
+                            continue
                         for task in tasks:
                             print(f'{task.id}. {task.description}, {task.status}')
+                        print('________________________________________________________________')
                         choice = helper.user_choice_tasks()
-                        changing_task = self.DB.get_user_task_byid(task_id=choice)
+                        changing_task = self.DB.get_user_task_byid(task_id=choice , user=user)
                         choice = helper.update_task_choice()
                         if choice == 1:
                             name = input('Description: ')
                             status = self.DB.update_task(task=changing_task, name=name)
                             if status is False:
-                                print(status)
+                                print('Error')
                                 continue
                         elif choice == 2:
                             statusas = input('Status: ')
                             status = self.DB.update_task(task=changing_task, status=statusas)
                             if status is False:
-                                print(status)
+                                print('Error')
                                 continue
                     elif choice == 3:
                         tasks = self.DB.user_tasks(user=user)
+                        print('________________________________________________________________')
+                        if tasks is False:
+                            print('Not found tasks')
+                            print('________________________________________________________________')
+                            continue
                         for task in tasks:
                             print(f'{task.id}. {task.description}, {task.status}')
+                        print('________________________________________________________________')
                         choice = helper.user_choice_tasks()
-                        task = self.DB.get_user_task_byid(task_id=choice)
+                        task = self.DB.get_user_task_byid(task_id=choice , user=user)
                         status = self.DB.delete_task(task=task)
                         if status is False:
-                            print(status)
+                            print('Error')
                             continue
                     elif choice == 4:
                         tasks = self.DB.user_tasks(user=user)
+                        print('________________________________________________________________')
+                        if tasks is False:
+                            print('Not found tasks')
+                            print('________________________________________________________________')
+                            continue
                         for task in tasks:
                             print(f'{task.description}, {task.status}')
+                        print('________________________________________________________________')
                     elif choice == 5:
                         exit()
             elif choice == 2:
