@@ -19,7 +19,7 @@ class App:
                 email = input('Email: ')
                 password = input('Password: ')
                 user = self.DB.select_user_by_password_email(email=email, password=password)
-                if user == 'error':
+                if user is False:
                     print('Wrong email or password')
                     continue
 
@@ -29,7 +29,7 @@ class App:
                     if choice == 1:
                         task = input('Description: ')
                         status = self.DB.add_task(task=task, user=user)
-                        if status == "error":
+                        if status is False:
                             print(status)
                             continue
                         print("Successfully save task")
@@ -43,13 +43,13 @@ class App:
                         if choice == 1:
                             name = input('Description: ')
                             status = self.DB.update_task(task=changing_task, name=name)
-                            if status == "error":
+                            if status is False:
                                 print(status)
                                 continue
                         elif choice == 2:
                             statusas = input('Status: ')
                             status = self.DB.update_task(task=changing_task, status=statusas)
-                            if status == "error":
+                            if status is False:
                                 print(status)
                                 continue
                     elif choice == 3:
@@ -59,7 +59,7 @@ class App:
                         choice = helper.user_choice_tasks()
                         task = self.DB.get_user_task_byid(task_id=choice)
                         status = self.DB.delete_task(task=task)
-                        if status == "error":
+                        if status is False:
                             print(status)
                             continue
                     elif choice == 4:
@@ -73,10 +73,10 @@ class App:
                 password = input('Password: ')
                 email = input('Email: ')
                 status = self.DB.insert_user(username=username, password=password, email=email)
-                if status == "success":
+                if status is True:
                     print('Registration successful')
                 else:
-                    print('Registration failed')
+                    print(f'Registration failed this email {email} is in use')
                     continue
             elif choice == 3:
                 exit()
